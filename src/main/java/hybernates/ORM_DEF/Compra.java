@@ -1,16 +1,27 @@
 package hybernates.ORM_DEF;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name="compra")
 public class Compra {
-
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     int idCompra;
+    @Column
     int idBitllet;
+    @Column
     int idViatge;
+    @Column
     int idClient;
+    @Column
     LocalDate dataCompra;
+    @Column
     double preu;
+    @Column
     String nomPassatger;
+    @Column
     String dniPassatger;
 
     public Compra() {

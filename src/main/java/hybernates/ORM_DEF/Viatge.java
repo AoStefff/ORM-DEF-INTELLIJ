@@ -2,12 +2,7 @@ package hybernates.ORM_DEF;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="viatge")
@@ -15,7 +10,10 @@ public class Viatge {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
     int id_viatge;
-	@Column
+
+    @ManyToOne
+    @JoinColumn(columnDefinition = "id",foreignKey  = @ForeignKey(name = "fk_desti"))
+    Localitat id_origenn;
     int id_origen;
 	@Column
     int id_desti;

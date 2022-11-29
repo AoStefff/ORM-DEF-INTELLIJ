@@ -1,10 +1,20 @@
 package hybernates.ORM_DEF;
 
-public class Equipatge {
-    int id;
-    String nom;
-    double pes;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="equipatge")
+public class Equipatge {
+    @Id
+    int id;
+    @Column
+    String nom;
+    @Column
+    double pes;
+    @Column
     double preu;
 
     public Equipatge(int id, String nom, double pes, double preu) {

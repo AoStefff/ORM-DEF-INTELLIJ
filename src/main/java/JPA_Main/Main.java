@@ -18,20 +18,24 @@ import Implementacions.Implementacions;
 import Interficies.DAO;
 
 public class Main {
+
+
     static DAO dao=new Implementacions();
      static Connection con;
 
     static {
         try {
-            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/agencia_viatges","postgres","mcgastron99");
+            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/a","postgres","1234");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-
+    static EntityManager entity = JPAUtil.getEntityManagerFactory().createEntityManager();
     public static void main(String[] args) throws SQLException {
-    	
+
+        //Afegeix viatge
+
     	
         Scanner lec=new Scanner(System.in);
 
@@ -102,7 +106,7 @@ public static void menuAdmin(){
                 case 2:
                 	
                 	//Afegeix viatge
-                	EntityManager entity = JPAUtil.getEntityManagerFactory().createEntityManager();
+                	//EntityManager entity = JPAUtil.getEntityManagerFactory().createEntityManager();
                     
                 	ArrayList<Localitat> localitats = dao.TotsLoc(con);
                     ArrayList<Transport> transports = dao.TotsTran(con);
@@ -282,10 +286,10 @@ public static void menuAdmin(){
                             boolean trobatB = false;
                             int i=0;
                             while (!trobatB && i< bitllets.size()){
-                                if (bitllets.get(i).getIdViatge()==idE) trobatB = true;
+                                if (bitllets.get(i).getId_viatge()==idE) trobatB = true;
                                 else i++;
                             }
-                            dao.deleteBitllet(dao.cercaBitllet(bitllets.get(i).getId(),con),con);
+                            dao.deleteBitllet(dao.cercaBitllet(bitllets.get(i).getId_bitllet(),con),con);
                             dao.deleteViatge(dao.cercaViatge(idE,con),con);
 
                     }
@@ -329,7 +333,7 @@ public static void menuUser(Client c){
                 Bitllet b = null;
                 int i=0;
                 while(!trobat && i< bitllets.size()){
-                    if(bitllets.get(i).getIdViatge()==codi){
+                    if(bitllets.get(i).getId_viatge()==codi){
                         b=bitllets.get(i);
                         trobat=true;
                     }
@@ -341,7 +345,7 @@ public static void menuUser(Client c){
                  ArrayList<Compra>compres = dao.TotsCom(con);
                  int dispo=seients;
                  for(Compra co:compres){
-                     if(co.getIdBitllet()==b.getId()){
+                     if(co.getIdBitllet()==b.getId_bitllet()){
                          dispo--;
                      }
                  }
@@ -366,7 +370,7 @@ public static void menuUser(Client c){
                                        System.out.println("Portarà maletes? (S/N)");
                                        resp=lec.nextLine();
                                        if (resp.equalsIgnoreCase("S")){
-                                           Compra com=new Compra(b.getId(),v.getIdViatge(),c.getId(),LocalDate.now(),b.getPreu(),nom,dni);
+                                           Compra com=new Compra(b.getId_bitllet(),v.getIdViatge(),c.getId(),LocalDate.now(),b.getPreu(),nom,dni);
                                            ArrayList<Equipatge>equips=dao.TotsEquip(con);
                                            System.out.println("Quantes maletes portarà? Maxim 3 per persona");
                                            int quant=lec.nextInt();
@@ -394,7 +398,7 @@ public static void menuUser(Client c){
                                            dao.createCompra(com,con);
                                        }
                                        else {
-                                           Compra com=new Compra(b.getId(),v.getIdViatge(),c.getId(),LocalDate.now(),b.getPreu(),nom,dni);
+                                           Compra com=new Compra(b.getId_bitllet(),v.getIdViatge(),c.getId(),LocalDate.now(),b.getPreu(),nom,dni);
                                            dao.createCompra(com,con);
                                        }
                                }

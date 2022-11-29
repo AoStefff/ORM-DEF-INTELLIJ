@@ -10,7 +10,7 @@ import javax.persistence.Query;
 import hybernates.ORM_DEF.ExampleCrud;
 
 
-public class MainApp { //Classe d'entrada del projecte.
+public class CRUDmain { //Classe d'entrada del projecte.
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

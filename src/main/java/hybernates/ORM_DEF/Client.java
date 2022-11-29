@@ -9,14 +9,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+@Entity
+@Table(name="client")
 public class Client  {
-	
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     int id;
+    @Column
     String dni;
+    @Column
     String nom;
+    @Column
     LocalDate dataNaix;
+    @Column
     String telefon;
+    @Column
     String email;
+    @Column
     boolean admin;
     
     public Client() {

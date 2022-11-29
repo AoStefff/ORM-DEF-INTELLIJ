@@ -1,32 +1,41 @@
 package hybernates.ORM_DEF;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="billet")
 public class Bitllet {
-    int id;
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    int id_bitllet;
+    @Column
     double preu;
-    int tipusSeient;
-    int idViatge;
+    @Column
+    int tipus_s;
+    @Column
+    int id_viatge;
 
     public Bitllet() {
     }
 
     public Bitllet(int id, double preu, int tipusSeient, int idViatge) {
-        this.id = id;
+        this.id_bitllet = id;
         this.preu = preu;
-        this.tipusSeient = tipusSeient;
-        this.idViatge = idViatge;
+        this.tipus_s = tipusSeient;
+        this.id_viatge = idViatge;
     }
     public Bitllet(double preu, int tipusSeient, int idViatge) {
         this.preu = preu;
-        this.tipusSeient = tipusSeient;
-        this.idViatge = idViatge;
+        this.tipus_s = tipusSeient;
+        this.id_viatge = idViatge;
     }
 
-    public int getId() {
-        return id;
+    public int getId_bitllet() {
+        return id_bitllet;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId_bitllet(int id_bitllet) {
+        this.id_bitllet = id_bitllet;
     }
 
     public double getPreu() {
@@ -38,18 +47,18 @@ public class Bitllet {
     }
 
     public int getTipusSeient() {
-        return tipusSeient;
+        return tipus_s;
     }
 
     public void setTipusSeient(int tipusSeient) {
-        this.tipusSeient = tipusSeient;
+        this.tipus_s = tipusSeient;
     }
 
-    public int getIdViatge() {
-        return idViatge;
+    public int getId_viatge() {
+        return id_viatge;
     }
 
-    public void setIdViatge(int idViatge) {
-        this.idViatge = idViatge;
+    public void setId_viatge(int id_viatge) {
+        this.id_viatge = id_viatge;
     }
 }

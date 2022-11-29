@@ -1,10 +1,20 @@
 package hybernates.ORM_DEF;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="transport")
 public class Transport {
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     int id;
+    @Column
     int sNormal;
+    @Column
     int sPreferent;
+    @Column
     String nom;
+    @Column
     int maxPes;
 
     public Transport() {

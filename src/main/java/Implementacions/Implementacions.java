@@ -131,7 +131,7 @@ public class Implementacions implements DAO {
     public boolean createBitllet(Bitllet bit, Connection con) {
         try {
             Statement stmt=con.createStatement();
-            stmt.executeUpdate("Insert into bitllets (preu,tipus_s,id_viatge) values("+bit.getPreu()+","+bit.getTipusSeient()+","+bit.getIdViatge()+")");
+            stmt.executeUpdate("Insert into bitllets (preu,tipus_s,id_viatge) values("+bit.getPreu()+","+bit.getTipusSeient()+","+bit.getId_viatge()+")");
         }
         catch(Exception a) {
             return false;
@@ -144,7 +144,7 @@ public class Implementacions implements DAO {
     public boolean updateBitllet(Bitllet bit, Connection con) {
         try {
             Statement stmt=con.createStatement();
-            stmt.executeUpdate("Update bitllets SET (preu,tipus_s,id_viatge) = ("+bit.getPreu()+","+bit.getTipusSeient()+","+bit.getIdViatge()+") where id_bitllet="+bit.getId());
+            stmt.executeUpdate("Update bitllets SET (preu,tipus_s,id_viatge) = ("+bit.getPreu()+","+bit.getTipusSeient()+","+bit.getId_viatge()+") where id_bitllet="+bit.getId_bitllet());
         }
         catch(Exception a) {
             return false;
@@ -157,7 +157,7 @@ public class Implementacions implements DAO {
     public boolean deleteBitllet(Bitllet bit, Connection con) {
         try {
             Statement stmt=con.createStatement();
-            stmt.executeUpdate("Delete from bitllets where id_bitllet="+bit.getId());
+            stmt.executeUpdate("Delete from bitllets where id_bitllet="+bit.getId_bitllet());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

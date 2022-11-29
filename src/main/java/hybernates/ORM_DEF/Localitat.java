@@ -1,9 +1,18 @@
 package hybernates.ORM_DEF;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="localitat")
 public class Localitat {
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     int id;
+    @Column
     String nom;
+    @Column
     String pais;
+    @Column
     String abreviacio;
 
     public Localitat() {

@@ -1,9 +1,20 @@
 package hybernates.ORM_DEF;
 
-public class FacEquip {
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name="factura_equipatge")
+public class FacEquip implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     int id;
+    @Id
     int idVia;
+    @Id
     int idCli;
+    @Column
     int idEqui;
 
     public FacEquip() {
