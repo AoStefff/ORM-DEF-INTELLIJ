@@ -196,6 +196,8 @@ public class Implementacions implements DAO {
         return c;
     }
 
+    //---------------------------------------------- Douglas  ----------------------------------------------------------------------------
+
     @Override
     public boolean createCompra(Compra com, Connection con) {
         try {
@@ -370,6 +372,8 @@ public class Implementacions implements DAO {
         return true;
     }
 
+    //-------------------------------- Arnau(Perpy) -----------------------------------------------------------
+
     @Override
     public ArrayList<Localitat> TotsLoc(Connection con) {
         ArrayList<Localitat>localitats=new ArrayList<>();
@@ -385,6 +389,8 @@ public class Implementacions implements DAO {
         }
         return localitats;
     }
+
+
 
     @Override
     public Localitat cercaLocalitat(int id, Connection con) {
