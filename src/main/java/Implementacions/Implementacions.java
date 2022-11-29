@@ -372,7 +372,7 @@ public class Implementacions implements DAO {
         return true;
     }
 
-    //-------------------------------- Arnau(Perpy) -----------------------------------------------------------
+    //-------------------------------- Arnau(Perpy) ------------------------------------------------------------
 
     @Override
     public ArrayList<Localitat> TotsLoc(Connection con) {
