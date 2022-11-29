@@ -23,6 +23,8 @@ public class Main {
     static DAO dao=new Implementacions();
      static Connection con;
 
+    static EntityManager entity = JPAUtil.getEntityManagerFactory().createEntityManager();
+
     static {
         try {
             con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/a","postgres","1234");
@@ -31,7 +33,7 @@ public class Main {
         }
     }
 
-    static EntityManager entity = JPAUtil.getEntityManagerFactory().createEntityManager();
+
     public static void main(String[] args) throws SQLException {
 
         //Afegeix viatge

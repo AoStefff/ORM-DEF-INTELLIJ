@@ -3,6 +3,7 @@ package Implementacions;
 import Interficies.DAO;
 import hybernates.ORM_DEF.*;
 
+import javax.persistence.EntityManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 public class Implementacions implements DAO {
 
     @Override
-    public ArrayList<Client> TotsCli(Connection con) {
+    public ArrayList<Client> TotsCli(EntityManager entity) {
         ArrayList<Client>clients=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
@@ -28,7 +29,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public Client cercaClient(String dni, Connection con) {
+    public Client cercaClient(String dni, EntityManager entity) {
         Client c;
         try {
             Statement stmt=con.createStatement();
@@ -42,7 +43,7 @@ public class Implementacions implements DAO {
 
         return c;
     }
-    public Client cercaClient(int id, Connection con) {
+    public Client cercaClient(int id, EntityManager entity) {
         Client c;
         try {
             Statement stmt=con.createStatement();
@@ -59,7 +60,7 @@ public class Implementacions implements DAO {
 
 
     @Override
-    public boolean createClient(Client cli, Connection con) {
+    public boolean createClient(Client cli, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Insert into client (dni,nom,data_naix,mail,telefon) values('"+cli.getDni()+"','"+cli.getNom()+"','"+cli.getDataNaix()+"','"+cli.getTelefon()+"','"+cli.getEmail()+"')");
@@ -72,7 +73,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public boolean updateClient(Client cli, Connection con) {
+    public boolean updateClient(Client cli, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Update client SET (dni,nom,data_naix,mail,telefon) = ('"+cli.getDni()+"','"+cli.getNom()+"','"+cli.getDataNaix()+"','"+cli.getTelefon()+"','"+cli.getEmail()+"') where id_client="+cli.getId());
@@ -85,7 +86,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public boolean deleteClient(Client cli, Connection con) {
+    public boolean deleteClient(Client cli, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Delete from client where id_client="+cli.getId());
@@ -96,7 +97,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public ArrayList<Bitllet> TotsBit(Connection con) {
+    public ArrayList<Bitllet> TotsBit(EntityManager entity) {
         ArrayList<Bitllet>bitllets=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
@@ -112,7 +113,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public Bitllet cercaBitllet(int id, Connection con) {
+    public Bitllet cercaBitllet(int id, EntityManager entity) {
         Bitllet b;
         try {
             Statement stmt=con.createStatement();
@@ -128,7 +129,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public boolean createBitllet(Bitllet bit, Connection con) {
+    public boolean createBitllet(Bitllet bit, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Insert into bitllets (preu,tipus_s,id_viatge) values("+bit.getPreu()+","+bit.getTipusSeient()+","+bit.getId_viatge()+")");
@@ -141,7 +142,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public boolean updateBitllet(Bitllet bit, Connection con) {
+    public boolean updateBitllet(Bitllet bit, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Update bitllets SET (preu,tipus_s,id_viatge) = ("+bit.getPreu()+","+bit.getTipusSeient()+","+bit.getId_viatge()+") where id_bitllet="+bit.getId_bitllet());
@@ -154,7 +155,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public boolean deleteBitllet(Bitllet bit, Connection con) {
+    public boolean deleteBitllet(Bitllet bit, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Delete from bitllets where id_bitllet="+bit.getId_bitllet());
@@ -165,7 +166,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public ArrayList<Compra> TotsCom(Connection con) {
+    public ArrayList<Compra> TotsCom(EntityManager entity) {
         ArrayList<Compra>compres=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
@@ -181,7 +182,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public Compra cercaCompra(int id, Connection con) {
+    public Compra cercaCompra(int id, EntityManager entity) {
         Compra c;
         try {
             Statement stmt=con.createStatement();
@@ -199,7 +200,7 @@ public class Implementacions implements DAO {
     //---------------------------------------------- Douglas  ----------------------------------------------------------------------------
 
     @Override
-    public boolean createCompra(Compra com, Connection con) {
+    public boolean createCompra(Compra com, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Insert into compres (id_bitllet,id_viatge,id_client,data_compra,preu,nom_viatger,dni_viatger) values('"+com.getIdBitllet()+"','"+com.getIdViatge()+"','"+com.getIdClient()+"','"+com.getDataCompra()+"','"+com.getPreu()+"','"+com.getNomPassatger()+"','"+com.getDniPassatger()+"')");
@@ -212,7 +213,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public boolean updateCompra(Compra com, Connection con) {
+    public boolean updateCompra(Compra com, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Update compres SET (id_compra,id_bitllet,id_viatge,id_client,data_compra,preu,nom_viatger,dni_viatger) = ("+com.getIdCompra()+","+com.getIdBitllet()+","+com.getIdViatge()+","+com.getIdClient()+",'"+com.getDataCompra()+"',"+com.getPreu()+",'"+com.getNomPassatger()+"','"+com.getDniPassatger()+"') where id_bitllet="+com.getIdBitllet()+" AND id_viatge="+com.getIdViatge());
@@ -225,7 +226,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public boolean deleteCompra(Compra com, Connection con) {
+    public boolean deleteCompra(Compra com, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Delete from compres where id_bitllet="+com.getIdBitllet()+" AND id_viatge= "+com.getIdViatge());
@@ -236,7 +237,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public ArrayList<Equipatge> TotsEquip(Connection con) {
+    public ArrayList<Equipatge> TotsEquip(EntityManager entity) {
         ArrayList<Equipatge>equipatges=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
@@ -252,7 +253,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public Equipatge cercaEquipatge(int id, Connection con) {
+    public Equipatge cercaEquipatge(int id, EntityManager entity) {
         Equipatge q;
         try {
             Statement stmt=con.createStatement();
@@ -268,7 +269,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public boolean createEquipatge(Equipatge equ, Connection con) {
+    public boolean createEquipatge(Equipatge equ, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Insert into equipatge values("+equ.getId()+",'"+equ.getNom()+"',"+equ.getPes()+","+equ.getPreu()+")");
@@ -281,7 +282,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public boolean updateEquipatge(Equipatge equ, Connection con) {
+    public boolean updateEquipatge(Equipatge equ, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Update equipatge SET("+equ.getId()+",'"+equ.getNom()+"',"+equ.getPes()+","+equ.getPreu()+") where id_equipatge="+equ.getId());
@@ -294,7 +295,7 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public boolean deleteEquipatge(Equipatge equ, Connection con) {
+    public boolean deleteEquipatge(Equipatge equ, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Delete from equipatge where id_equipatge="+equ.getId());
@@ -304,7 +305,7 @@ public class Implementacions implements DAO {
         return true;
     }
 
-    public ArrayList<FacEquip> TotsFequip(Connection con) {
+    public ArrayList<FacEquip> TotsFequip(EntityManager entity) {
         ArrayList<FacEquip>facEquips=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
@@ -319,8 +320,8 @@ public class Implementacions implements DAO {
         return facEquips;
     }
 
-    @Override
-    public FacEquip cercaFacEquipatge(int id, Connection con) {
+
+    public FacEquip cercaFacEquipatge(int id, EntityManager entity) {
         FacEquip f;
         try {
             Statement stmt=con.createStatement();
@@ -335,8 +336,8 @@ public class Implementacions implements DAO {
         return f;
     }
 
-    @Override
-    public boolean createFacEquipatge(FacEquip feq, Connection con) {
+
+    public boolean createFacEquipatge(FacEquip feq, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Insert into factura_equipatge(id_viatge,id_client,id_equipatge) values("+feq.getIdVia()+","+feq.getIdCli()+","+feq.getIdEqui()+")");
@@ -348,8 +349,8 @@ public class Implementacions implements DAO {
         return true;
     }
 
-    @Override
-    public boolean updateFacEquipatge(FacEquip feq, Connection con) {
+
+    public boolean updateFacEquipatge(FacEquip feq, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Update factura_equipatge SET ("+feq.getId()+","+feq.getIdVia()+","+feq.getIdCli()+","+feq.getIdEqui()+") where id_factura="+feq.getId()+"");
@@ -361,8 +362,8 @@ public class Implementacions implements DAO {
         return true;
     }
 
-    @Override
-    public boolean deleteFacEquipatge(FacEquip feq, Connection con) {
+
+    public boolean deleteFacEquipatge(FacEquip feq, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Delete from factura_equipatge where id_factura="+feq.getId());
@@ -374,8 +375,8 @@ public class Implementacions implements DAO {
 
     //-------------------------------- Arnau(Perpy) ------------------------------------------------------------
 
-    @Override
-    public ArrayList<Localitat> TotsLoc(Connection con) {
+
+    public ArrayList<Localitat> TotsLoc(EntityManager entity) {
         ArrayList<Localitat>localitats=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
@@ -392,8 +393,7 @@ public class Implementacions implements DAO {
 
 
 
-    @Override
-    public Localitat cercaLocalitat(int id, Connection con) {
+    public Localitat cercaLocalitat(int id, EntityManager entity) {
         Localitat l;
         try {
             Statement stmt=con.createStatement();
@@ -408,8 +408,8 @@ public class Implementacions implements DAO {
         return l;
     }
 
-    @Override
-    public boolean createLocalitat(Localitat loc, Connection con) {
+
+    public boolean createLocalitat(Localitat loc, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Insert into localitats (nom,pais,abreviacio) values('"+loc.getNom()+"','"+loc.getPais()+"','"+loc.getAbreviacio()+"')");
@@ -421,8 +421,7 @@ public class Implementacions implements DAO {
         return true;
     }
 
-    @Override
-    public boolean updateLocalitat(Localitat loc, Connection con) {
+    public boolean updateLocalitat(Localitat loc, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Update localitats SET (nom,pais,abreviacio) = ('"+loc.getNom()+"','"+loc.getPais()+"','"+loc.getAbreviacio()+"') where id_localitat="+loc.getId()+"");
@@ -434,8 +433,7 @@ public class Implementacions implements DAO {
         return true;
     }
 
-    @Override
-    public boolean deleteLocalitat(Localitat loc, Connection con) {
+    public boolean deleteLocalitat(Localitat loc, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Delete from localitats where id_localitat="+loc.getId());
@@ -445,8 +443,7 @@ public class Implementacions implements DAO {
         return true;
     }
 
-    @Override
-    public ArrayList<Transport> TotsTran(Connection con) {
+    public ArrayList<Transport> TotsTran(EntityManager entity) {
         ArrayList<Transport>transports=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
@@ -461,8 +458,7 @@ public class Implementacions implements DAO {
         return transports;
     }
 
-    @Override
-    public Transport cercaTransport(int id, Connection con) {
+    public Transport cercaTransport(int id, EntityManager entity) {
         Transport t;
         try {
             Statement stmt=con.createStatement();
@@ -477,8 +473,8 @@ public class Implementacions implements DAO {
         return t;
     }
 
-    @Override
-    public boolean createTransport(Transport tra, Connection con) {
+
+    public boolean createTransport(Transport tra, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Insert into transport (s_normal,s_preferent,nom,max_pes) values("+tra.getsNormal()+","+tra.getsPreferent()+",'"+tra.getNom()+"',"+tra.getMaxPes()+")");
@@ -490,8 +486,7 @@ public class Implementacions implements DAO {
         return true;
     }
 
-    @Override
-    public boolean updateTransport(Transport tra, Connection con) {
+    public boolean updateTransport(Transport tra, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Update transport SET (s_normal,s_preferent,nom) = ("+tra.getsNormal()+","+tra.getsPreferent()+",'"+tra.getNom()+"') where id_transport="+tra.getId());
@@ -503,8 +498,7 @@ public class Implementacions implements DAO {
         return true;
     }
 
-    @Override
-    public boolean deleteTransport(Transport tra, Connection con) {
+    public boolean deleteTransport(Transport tra, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Delete from transport where id_transport="+tra.getId()+"");
@@ -514,8 +508,7 @@ public class Implementacions implements DAO {
         return true;
     }
 
-    @Override
-    public ArrayList<Viatge> TotsVia(Connection con) {
+    public ArrayList<Viatge> TotsVia(EntityManager entity) {
         ArrayList<Viatge>viatges=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
@@ -530,8 +523,7 @@ public class Implementacions implements DAO {
         return viatges;
     }
 
-    @Override
-    public Viatge cercaViatge(int id, Connection con) {
+    public Viatge cercaViatge(int id, EntityManager entity) {
         Viatge v;
         try {
             Statement stmt=con.createStatement();
