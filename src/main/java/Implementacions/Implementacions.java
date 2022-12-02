@@ -372,9 +372,9 @@ public class Implementacions implements DAO {
 
 
     public List<Localitat> TotsLoc(EntityManager entity) {
-            List<Client> localitats = new ArrayList<>();
+            List<Localitat> localitats = new ArrayList<>();
 
-            Query query=entity.createQuery("SELECT c FROM Client c");
+            Query query=entity.createQuery("SELECT l FROM Localitat ");
             localitats = query.getResultList();
 
         return localitats;
@@ -383,15 +383,13 @@ public class Implementacions implements DAO {
 
 
     public Localitat cercaLocalitat(int id, EntityManager entity) {
+        //cerca una localitat mitjançant el seu id.
+
         Localitat l;
-        try {
-            Statement stmt=con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from localitats where id_localitat="+id);
-            rs.getRow();
-            rs.next();
-            l=new Localitat(rs.getInt("id_localitat"),rs.getString("nom"),rs.getString("pais"),rs.getString("abreviacio"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+        l = entity.find(Localitat.class, id);
+        if (l == null) {
+            System.out.println("Localitat no trobada!");
         }
 
         return l;
@@ -400,11 +398,16 @@ public class Implementacions implements DAO {
 
     public boolean createLocalitat(Localitat loc, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Insert into localitats (nom,pais,abreviacio) values('"+loc.getNom()+"','"+loc.getPais()+"','"+loc.getAbreviacio()+"')");
+
+            entity.getTransaction().begin();
+            entity.persist(loc);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
             return false;
+
         }
 
         return true;
@@ -412,11 +415,16 @@ public class Implementacions implements DAO {
 
     public boolean updateLocalitat(Localitat loc, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Update localitats SET (nom,pais,abreviacio) = ('"+loc.getNom()+"','"+loc.getPais()+"','"+loc.getAbreviacio()+"') where id_localitat="+loc.getId()+"");
+
+            entity.getTransaction().begin();
+            entity.merge(loc);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
             return false;
+
         }
 
         return true;
@@ -424,39 +432,38 @@ public class Implementacions implements DAO {
 
     public boolean deleteLocalitat(Localitat loc, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Delete from localitats where id_localitat="+loc.getId());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            entity.getTransaction().begin();
+            entity.remove(loc);
+            entity.getTransaction().commit();
+
         }
+        catch(Exception e) {
+
+            return false;
+
+        }
+
         return true;
     }
 
     public List<Transport> TotsTran(EntityManager entity) {
-        List<Transport>transports=new ArrayList<>();
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from transport");
-            rs.getRow();
-            while (rs.next()){
-                transports.add(new Transport(rs.getInt("id_transport"),rs.getInt("s_normal"),rs.getInt("s_preferent"),rs.getString("nom"),rs.getInt("max_pes")));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        List<Transport> transports = new ArrayList<>();
+
+        Query query=entity.createQuery("SELECT t FROM Transport t");
+        transports = query.getResultList();
+
         return transports;
     }
 
     public Transport cercaTransport(int id, EntityManager entity) {
+        //cerca un transport mitjançant el seu id.
+
         Transport t;
-        try {
-            Statement stmt=con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from transport where id_transport="+id);
-            rs.getRow();
-            rs.next();
-            t=new Transport(rs.getInt("id_transport"),rs.getInt("s_normal"),rs.getInt("s_preferent"),rs.getString("nom"),rs.getInt("max_pes"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+        t = entity.find(Transport.class, id);
+        if (t == null) {
+            System.out.println("Transport no trobat!");
         }
 
         return t;
@@ -465,11 +472,16 @@ public class Implementacions implements DAO {
 
     public boolean createTransport(Transport tra, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Insert into transport (s_normal,s_preferent,nom,max_pes) values("+tra.getsNormal()+","+tra.getsPreferent()+",'"+tra.getNom()+"',"+tra.getMaxPes()+")");
+
+            entity.getTransaction().begin();
+            entity.persist(tra);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
             return false;
+
         }
 
         return true;
@@ -477,11 +489,16 @@ public class Implementacions implements DAO {
 
     public boolean updateTransport(Transport tra, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Update transport SET (s_normal,s_preferent,nom) = ("+tra.getsNormal()+","+tra.getsPreferent()+",'"+tra.getNom()+"') where id_transport="+tra.getId());
+
+            entity.getTransaction().begin();
+            entity.merge(tra);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
             return false;
+
         }
 
         return true;
@@ -489,51 +506,56 @@ public class Implementacions implements DAO {
 
     public boolean deleteTransport(Transport tra, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Delete from transport where id_transport="+tra.getId()+"");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            entity.getTransaction().begin();
+            entity.remove(tra);
+            entity.getTransaction().commit();
+
         }
+        catch(Exception e) {
+
+            return false;
+
+        }
+
         return true;
     }
 
     public List<Viatge> TotsVia(EntityManager entity) {
-        List<Viatge>viatges=new ArrayList<>();
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from viatge");
-            rs.getRow();
-            while (rs.next()){
-                viatges.add(new Viatge(rs.getInt("id_viatge"),rs.getInt("id_origen"),rs.getInt("id_desti"),rs.getTimestamp("data").toLocalDateTime(),rs.getInt("id_transport"),rs.getBoolean("habilitat")));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        List<Viatge> viatges = new ArrayList<>();
+
+        Query query=entity.createQuery("SELECT v FROM Viatge v");
+        viatges = query.getResultList();
+
         return viatges;
     }
 
     public Viatge cercaViatge(int id, EntityManager entity) {
+        //cerca un viatge mitjançant el seu id.
+
         Viatge v;
-        try {
-            Statement stmt=con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from viatge where id_viatge="+id);
-            rs.getRow();
-            rs.next();
-            v=new Viatge(rs.getInt("id_viatge"),rs.getInt("id_origen"),rs.getInt("id_desti"),rs.getTimestamp("data").toLocalDateTime(),rs.getInt("id_transport"),rs.getBoolean("habilitat"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+        v = entity.find(Viatge.class, id);
+        if (v == null) {
+            System.out.println("Viatge no trobat!");
         }
 
-        return v;    }
+        return t;
+    }
 
     @Override
     public boolean createViatge(Viatge via, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Insert into viatge (id_origen,id_desti,data,id_transport,habilitat) values("+via.getIdOrigen()+","+via.getIdDesti()+",'"+via.getDataHora()+"',"+via.getIdTransport()+","+via.isHabilitat()+")");
+
+            entity.getTransaction().begin();
+            entity.persist(via);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
             return false;
+
         }
 
         return true;
@@ -541,22 +563,35 @@ public class Implementacions implements DAO {
     @Override
     public boolean updateViatge(Viatge via, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Update viatge SET (id_origen,id_desti,data,id_transport,habilitat) = ("+via.getIdOrigen()+","+via.getIdDesti()+",'"+via.getDataHora()+"',"+via.getIdTransport()+","+via.isHabilitat()+") where id_viatge='"+via.getIdViatge()+"'");
+
+            entity.getTransaction().begin();
+            entity.merge(via);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
             return false;
+
         }
+
         return true;
     }
     @Override
     public boolean deleteViatge(Viatge via, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Delete from viatge where id_viatge="+via.getIdViatge());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            entity.getTransaction().begin();
+            entity.persist(via);
+            entity.getTransaction().commit();
+
         }
+        catch(Exception e) {
+
+            return false;
+
+        }
+
         return true;
     }
 }
