@@ -92,8 +92,8 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public ArrayList<Bitllet> TotsBit(EntityManager entity) {
-        ArrayList<Bitllet>bitllets=new ArrayList<>();
+    public List<Bitllet> TotsBit(EntityManager entity) {
+        List<Bitllet>bitllets=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
             ResultSet rs= stmt.executeQuery("Select * from bitllets");
@@ -161,8 +161,8 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public ArrayList<Compra> TotsCom(EntityManager entity) {
-        ArrayList<Compra>compres=new ArrayList<>();
+    public List<Compra> TotsCom(EntityManager entity) {
+        List<Compra>compres=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
             ResultSet rs= stmt.executeQuery("Select * from compres");
@@ -232,8 +232,8 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public ArrayList<Equipatge> TotsEquip(EntityManager entity) {
-        ArrayList<Equipatge>equipatges=new ArrayList<>();
+    public List<Equipatge> TotsEquip(EntityManager entity) {
+        List<Equipatge>equipatges=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
             ResultSet rs= stmt.executeQuery("Select * from equipatge");
@@ -300,8 +300,8 @@ public class Implementacions implements DAO {
         return true;
     }
 
-    public ArrayList<FacEquip> TotsFequip(EntityManager entity) {
-        ArrayList<FacEquip>facEquips=new ArrayList<>();
+    public List<FacEquip> TotsFequip(EntityManager entity) {
+        List<FacEquip>facEquips=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
             ResultSet rs= stmt.executeQuery("Select * from factura_equipatge");
@@ -371,18 +371,12 @@ public class Implementacions implements DAO {
     //-------------------------------- Arnau(Perpy) ------------------------------------------------------------
 
 
-    public ArrayList<Localitat> TotsLoc(EntityManager entity) {
-        ArrayList<Localitat>localitats=new ArrayList<>();
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from localitats");
-            rs.getRow();
-            while (rs.next()){
-                localitats.add(new Localitat(rs.getInt("id_localitat"),rs.getString("nom"),rs.getString("pais"),rs.getString("abreviacio")));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public List<Localitat> TotsLoc(EntityManager entity) {
+            List<Client> localitats = new ArrayList<>();
+
+            Query query=entity.createQuery("SELECT c FROM Client c");
+            localitats = query.getResultList();
+
         return localitats;
     }
 
@@ -438,8 +432,8 @@ public class Implementacions implements DAO {
         return true;
     }
 
-    public ArrayList<Transport> TotsTran(EntityManager entity) {
-        ArrayList<Transport>transports=new ArrayList<>();
+    public List<Transport> TotsTran(EntityManager entity) {
+        List<Transport>transports=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
             ResultSet rs= stmt.executeQuery("Select * from transport");
@@ -503,8 +497,8 @@ public class Implementacions implements DAO {
         return true;
     }
 
-    public ArrayList<Viatge> TotsVia(EntityManager entity) {
-        ArrayList<Viatge>viatges=new ArrayList<>();
+    public List<Viatge> TotsVia(EntityManager entity) {
+        List<Viatge>viatges=new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
             ResultSet rs= stmt.executeQuery("Select * from viatge");
