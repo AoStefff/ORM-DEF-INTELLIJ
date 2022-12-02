@@ -289,11 +289,16 @@ public class Implementacions implements DAO {
     @Override
     public boolean createEquipatge(Equipatge equ, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Insert into equipatge values("+equ.getId()+",'"+equ.getNom()+"',"+equ.getPes()+","+equ.getPreu()+")");
+
+            entity.getTransaction().begin();
+            entity.persist(equ);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
             return false;
+
         }
 
         return true;
@@ -302,11 +307,16 @@ public class Implementacions implements DAO {
     @Override
     public boolean updateEquipatge(Equipatge equ, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Update equipatge SET("+equ.getId()+",'"+equ.getNom()+"',"+equ.getPes()+","+equ.getPreu()+") where id_equipatge="+equ.getId());
+
+            entity.getTransaction().begin();
+            entity.persist(equ);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
             return false;
+
         }
 
         return true;
@@ -315,40 +325,39 @@ public class Implementacions implements DAO {
     @Override
     public boolean deleteEquipatge(Equipatge equ, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Delete from equipatge where id_equipatge="+equ.getId());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            entity.getTransaction().begin();
+            entity.persist(equ);
+            entity.getTransaction().commit();
+
         }
+        catch(Exception e) {
+
+            return false;
+
+        }
+
         return true;
     }
 
     public List<FacEquip> TotsFequip(EntityManager entity) {
-        List<FacEquip>facEquips=new ArrayList<>();
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from factura_equipatge");
-            rs.getRow();
-            while (rs.next()){
-                facEquips.add(new FacEquip(rs.getInt("id_factura"),rs.getInt("id_viatge"),rs.getInt("id_client"),rs.getInt("id_equipatge")));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        List<FacEquip> facEquips = new ArrayList<>();
+
+        Query query=entity.createQuery("SELECT f FROM FacEquip f");
+        facEquips = query.getResultList();
+
         return facEquips;
     }
 
 
     public FacEquip cercaFacEquipatge(int id, EntityManager entity) {
+        //cerca una factura mitjançant el seu id.
+
         FacEquip f;
-        try {
-            Statement stmt=con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from factura_equipatge where id_factura =" +id);
-            rs.getRow();
-            rs.next();
-            f=new FacEquip(rs.getInt("id_factura"),rs.getInt("id_viatge"),rs.getInt("id_client"),rs.getInt("id_equipatge"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+        f = entity.find(FacEquip.class, id);
+        if (f == null) {
+            System.out.println("Factura no trobada!");
         }
 
         return f;
@@ -357,11 +366,16 @@ public class Implementacions implements DAO {
 
     public boolean createFacEquipatge(FacEquip feq, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Insert into factura_equipatge(id_viatge,id_client,id_equipatge) values("+feq.getIdVia()+","+feq.getIdCli()+","+feq.getIdEqui()+")");
+
+            entity.getTransaction().begin();
+            entity.persist(feq);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
             return false;
+
         }
 
         return true;
@@ -370,11 +384,16 @@ public class Implementacions implements DAO {
 
     public boolean updateFacEquipatge(FacEquip feq, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Update factura_equipatge SET ("+feq.getId()+","+feq.getIdVia()+","+feq.getIdCli()+","+feq.getIdEqui()+") where id_factura="+feq.getId()+"");
+
+            entity.getTransaction().begin();
+            entity.persist(feq);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
             return false;
+
         }
 
         return true;
@@ -383,11 +402,18 @@ public class Implementacions implements DAO {
 
     public boolean deleteFacEquipatge(FacEquip feq, EntityManager entity) {
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Delete from factura_equipatge where id_factura="+feq.getId());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            entity.getTransaction().begin();
+            entity.persist(feq);
+            entity.getTransaction().commit();
+
         }
+        catch(Exception e) {
+
+            return false;
+
+        }
+
         return true;
     }
 
@@ -397,7 +423,7 @@ public class Implementacions implements DAO {
     public List<Localitat> TotsLoc(EntityManager entity) {
             List<Localitat> localitats = new ArrayList<>();
 
-            Query query=entity.createQuery("SELECT l FROM Localitat ");
+            Query query=entity.createQuery("SELECT l FROM Localitat l");
             localitats = query.getResultList();
 
         return localitats;
