@@ -1,82 +1,77 @@
 package Implementacions;
 
 import Interficies.DAO;
+import JPA_Main.JPAUtil;
 import hybernates.ORM_DEF.*;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Implementacions implements DAO {
 
     @Override
-    public ArrayList<Client> TotsCli(EntityManager entity) {
-        ArrayList<Client>clients=new ArrayList<>();
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from client");
-            rs.getRow();
-            while (rs.next()){
-                clients.add(new Client(rs.getInt("id_client"),rs.getString("dni"),rs.getString("nom"),(rs.getDate("data_naix").toLocalDate()),rs.getString("mail"),rs.getString("telefon"),rs.getBoolean("admin")));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public List<Client> TotsCli(EntityManager entity) {
+
+        List<Client> clients = new ArrayList<>();
+
+        Query query=entity.createQuery("SELECT c FROM Client c");
+        clients = query.getResultList();
+
         return clients;
     }
 
     @Override
     public Client cercaClient(String dni, EntityManager entity) {
+
+        //cerca un client mitjançant el seu id(dni).
+
         Client c;
-        try {
-            Statement stmt=con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from client where dni='"+dni+"'");
-            rs.getRow();
-            rs.next();
-             c=new Client(rs.getInt("id_client"),rs.getString("dni"),rs.getString("nom"),(rs.getDate("data_naix").toLocalDate()),rs.getString("mail"),rs.getString("telefon"),rs.getBoolean("admin"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+        c = entity.find(Client.class, dni);
+        if (c == null) {
+            System.out.println("Client no trobat!");
         }
 
         return c;
-    }
-    public Client cercaClient(int id, EntityManager entity) {
-        Client c;
-        try {
-            Statement stmt=con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from client where id_client="+id);
-            rs.getRow();
-            rs.next();
-            c=new Client(rs.getInt("id_client"),rs.getString("dni"),rs.getString("nom"),rs.getDate("data_naix").toLocalDate(),rs.getString("mail"),rs.getString("telefon"),rs.getBoolean("admin"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
-        return c;
     }
 
 
     @Override
     public boolean createClient(Client cli, EntityManager entity) {
+
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Insert into client (dni,nom,data_naix,mail,telefon) values('"+cli.getDni()+"','"+cli.getNom()+"','"+cli.getDataNaix()+"','"+cli.getTelefon()+"','"+cli.getEmail()+"')");
+
+            entity.getTransaction().begin();
+            entity.persist(cli);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
             return false;
+
         }
 
         return true;
+
     }
 
     @Override
     public boolean updateClient(Client cli, EntityManager entity) {
+
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Update client SET (dni,nom,data_naix,mail,telefon) = ('"+cli.getDni()+"','"+cli.getNom()+"','"+cli.getDataNaix()+"','"+cli.getTelefon()+"','"+cli.getEmail()+"') where id_client="+cli.getId());
+
+            entity.getTransaction().begin();
+            entity.merge(cli);
+            entity.getTransaction().commit();
+
         }
         catch(Exception a) {
             return false;
@@ -538,7 +533,7 @@ public class Implementacions implements DAO {
         return v;    }
 
     @Override
-    public boolean createViatge(Viatge via, Connection con) {
+    public boolean createViatge(Viatge via, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Insert into viatge (id_origen,id_desti,data,id_transport,habilitat) values("+via.getIdOrigen()+","+via.getIdDesti()+",'"+via.getDataHora()+"',"+via.getIdTransport()+","+via.isHabilitat()+")");
@@ -550,7 +545,7 @@ public class Implementacions implements DAO {
         return true;
     }
     @Override
-    public boolean updateViatge(Viatge via, Connection con) {
+    public boolean updateViatge(Viatge via, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Update viatge SET (id_origen,id_desti,data,id_transport,habilitat) = ("+via.getIdOrigen()+","+via.getIdDesti()+",'"+via.getDataHora()+"',"+via.getIdTransport()+","+via.isHabilitat()+") where id_viatge='"+via.getIdViatge()+"'");
@@ -561,7 +556,7 @@ public class Implementacions implements DAO {
         return true;
     }
     @Override
-    public boolean deleteViatge(Viatge via, Connection con) {
+    public boolean deleteViatge(Viatge via, EntityManager entity) {
         try {
             Statement stmt=con.createStatement();
             stmt.executeUpdate("Delete from viatge where id_viatge="+via.getIdViatge());

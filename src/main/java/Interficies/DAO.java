@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface DAO {
-    ArrayList<Client> TotsCli(EntityManager entity);
+    List<Client> TotsCli(EntityManager entity);
     Client cercaClient(String dni, EntityManager entity);
     Client cercaClient(int id, EntityManager entity);
 
@@ -16,7 +16,7 @@ public interface DAO {
     boolean updateClient(Client cli, EntityManager entity);
     boolean deleteClient(Client cli,EntityManager entity);
 
-    ArrayList<Bitllet> TotsBit(EntityManager entity);
+    List<Bitllet> TotsBit(EntityManager entity);
     Bitllet cercaBitllet(int id, EntityManager entity);
 
     boolean createBitllet(Bitllet bit, EntityManager entity);
@@ -25,7 +25,7 @@ public interface DAO {
 
 
 
-    ArrayList<Compra> TotsCom(EntityManager entity);
+    List<Compra> TotsCom(EntityManager entity);
     Compra cercaCompra(int id, EntityManager entity);
 
     boolean createCompra(Compra com, EntityManager entity);
@@ -33,14 +33,14 @@ public interface DAO {
     boolean deleteCompra(Compra com, EntityManager entity);
 
 
-    ArrayList<Equipatge> TotsEquip(EntityManager entity);
+    List<Equipatge> TotsEquip(EntityManager entity);
     Equipatge cercaEquipatge(int id, EntityManager entity);
 
     boolean createEquipatge(Equipatge equ, EntityManager entity);
     boolean updateEquipatge(Equipatge equ, EntityManager entity);
     boolean deleteEquipatge(Equipatge equ, EntityManager entity);
 
-    ArrayList<FacEquip> TotsFequip(EntityManager entity);
+    List<FacEquip> TotsFequip(EntityManager entity);
     FacEquip cercaFacEquipatge(int id, EntityManager entity);
 
     boolean createFacEquipatge(FacEquip feq, EntityManager entity);
@@ -49,7 +49,7 @@ public interface DAO {
 
 
 
-    ArrayList<Localitat> TotsLoc(EntityManager entity );
+    List<Localitat> TotsLoc(EntityManager entity );
     Localitat cercaLocalitat(int id, EntityManager entity );
 
     boolean createLocalitat(Localitat loc, EntityManager entity );
@@ -57,7 +57,7 @@ public interface DAO {
     boolean deleteLocalitat(Localitat loc, EntityManager entity);
 
 
-    ArrayList<Transport> TotsTran(EntityManager entity );
+    List<Transport> TotsTran(EntityManager entity );
     Transport cercaTransport(int id,  EntityManager entity);
 
     boolean createTransport(Transport tra, EntityManager entity );
@@ -65,7 +65,7 @@ public interface DAO {
     boolean deleteTransport(Transport tra, EntityManager entity );
 
 
-    ArrayList<Viatge> TotsVia( EntityManager entity);
+    List<Viatge> TotsVia( EntityManager entity);
     Viatge cercaViatge(int id, EntityManager entity );
 
     boolean createViatge(Viatge via, EntityManager entity );
