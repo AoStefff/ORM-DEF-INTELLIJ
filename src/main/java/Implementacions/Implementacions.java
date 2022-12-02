@@ -55,8 +55,8 @@ public class Implementacions implements DAO {
         }
         catch(Exception e) {
 
+           System.out.println(e + " createClient");
             return false;
-
         }
 
         return true;
@@ -73,8 +73,11 @@ public class Implementacions implements DAO {
             entity.getTransaction().commit();
 
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
+            System.out.println(e + " updateClient");
             return false;
+
         }
 
         return true;
@@ -82,114 +85,134 @@ public class Implementacions implements DAO {
 
     @Override
     public boolean deleteClient(Client cli, EntityManager entity) {
+
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Delete from client where id_client="+cli.getId());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            entity.getTransaction().begin();
+            entity.remove(cli);
+            entity.getTransaction().commit();
+
+        } catch (Exception e) {
+
+            System.out.println(e + " deleteClient");
+            return false;
+
         }
+
         return true;
     }
 
     @Override
     public List<Bitllet> TotsBit(EntityManager entity) {
+
         List<Bitllet>bitllets=new ArrayList<>();
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from bitllets");
-            rs.getRow();
-            while (rs.next()){
-                bitllets.add(new Bitllet(rs.getInt("id_bitllet"),rs.getDouble("preu"),rs.getInt("tipus_s"),rs.getInt("id_viatge")));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
+        Query query=entity.createQuery("SELECT b FROM Billet b");
+        bitllets = query.getResultList();
+
         return bitllets;
+
     }
 
     @Override
     public Bitllet cercaBitllet(int id, EntityManager entity) {
+
         Bitllet b;
-        try {
-            Statement stmt=con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from bitllets where id_bitllet="+id);
-            rs.getRow();
-            rs.next();
-            b=new Bitllet(rs.getInt("id_bitllet"),rs.getDouble("preu"),rs.getInt("tipus_s"),rs.getInt("id_viatge"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+        b = entity.find(Bitllet.class, id);
+        if (b == null) {
+            System.out.println("Billet no trobat!");
         }
 
         return b;
+
     }
 
     @Override
     public boolean createBitllet(Bitllet bit, EntityManager entity) {
+
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Insert into bitllets (preu,tipus_s,id_viatge) values("+bit.getPreu()+","+bit.getTipusSeient()+","+bit.getId_viatge()+")");
+
+            entity.getTransaction().begin();
+            entity.persist(bit);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
+            System.out.println(e + " createBitllet");
             return false;
         }
 
         return true;
+
     }
 
     @Override
     public boolean updateBitllet(Bitllet bit, EntityManager entity) {
+
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Update bitllets SET (preu,tipus_s,id_viatge) = ("+bit.getPreu()+","+bit.getTipusSeient()+","+bit.getId_viatge()+") where id_bitllet="+bit.getId_bitllet());
+
+            entity.getTransaction().begin();
+            entity.merge(bit);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
+            System.out.println(e + " updateBitllet");
             return false;
+
         }
 
         return true;
+
     }
 
     @Override
     public boolean deleteBitllet(Bitllet bit, EntityManager entity) {
+
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Delete from bitllets where id_bitllet="+bit.getId_bitllet());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            entity.getTransaction().begin();
+            entity.remove(bit);
+            entity.getTransaction().commit();
+
+        } catch (Exception e) {
+
+            System.out.println(e + " deleteBitllet");
+            return false;
+
         }
+
         return true;
+
     }
 
     @Override
     public List<Compra> TotsCom(EntityManager entity) {
+
         List<Compra>compres=new ArrayList<>();
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from compres");
-            rs.getRow();
-            while (rs.next()){
-                compres.add(new Compra(rs.getInt("id_compra"),rs.getInt("id_bitllet"),rs.getInt("id_viatge"),rs.getInt("id_client"),rs.getDate("data_compra").toLocalDate(),rs.getDouble("preu"),rs.getString("nom_viatger"),rs.getString("dni_viatger")));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
+        Query query=entity.createQuery("SELECT c FROM Compra c");
+        compres = query.getResultList();
+
         return compres;
+
     }
 
     @Override
     public Compra cercaCompra(int id, EntityManager entity) {
+
         Compra c;
-        try {
-            Statement stmt=con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select *  from compres where id_compra="+id);
-            rs.getRow();
-            rs.next();
-            c=new Compra(rs.getInt("id_compra"),rs.getInt("id_bitllet"),rs.getInt("id_viatge"),rs.getInt("id_client"),rs.getDate("data_compra").toLocalDate(),rs.getDouble("preu"),rs.getString("nom_viatger"),rs.getString("dni_viatger"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+        c = entity.find(Compra.class, id);
+        if (c == null) {
+            System.out.println("Compra no trobada!");
         }
 
         return c;
+
     }
 
     //---------------------------------------------- Douglas  ----------------------------------------------------------------------------
@@ -540,7 +563,7 @@ public class Implementacions implements DAO {
             System.out.println("Viatge no trobat!");
         }
 
-        return t;
+        return v;
     }
 
     @Override
