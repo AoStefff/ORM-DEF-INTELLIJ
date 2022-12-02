@@ -107,7 +107,7 @@ public class Implementacions implements DAO {
 
         List<Bitllet>bitllets=new ArrayList<>();
 
-        Query query=entity.createQuery("SELECT b FROM Billet b");
+        Query query=entity.createQuery("SELECT b FROM Bitllet b");
         bitllets = query.getResultList();
 
         return bitllets;
@@ -219,72 +219,92 @@ public class Implementacions implements DAO {
 
     @Override
     public boolean createCompra(Compra com, EntityManager entity) {
+
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Insert into compres (id_bitllet,id_viatge,id_client,data_compra,preu,nom_viatger,dni_viatger) values('"+com.getIdBitllet()+"','"+com.getIdViatge()+"','"+com.getIdClient()+"','"+com.getDataCompra()+"','"+com.getPreu()+"','"+com.getNomPassatger()+"','"+com.getDniPassatger()+"')");
+
+            entity.getTransaction().begin();
+            entity.persist(com);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
+            System.out.println(e + " createCompra");
             return false;
         }
 
         return true;
+
     }
 
     @Override
     public boolean updateCompra(Compra com, EntityManager entity) {
+
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Update compres SET (id_compra,id_bitllet,id_viatge,id_client,data_compra,preu,nom_viatger,dni_viatger) = ("+com.getIdCompra()+","+com.getIdBitllet()+","+com.getIdViatge()+","+com.getIdClient()+",'"+com.getDataCompra()+"',"+com.getPreu()+",'"+com.getNomPassatger()+"','"+com.getDniPassatger()+"') where id_bitllet="+com.getIdBitllet()+" AND id_viatge="+com.getIdViatge());
+
+            entity.getTransaction().begin();
+            entity.merge(com);
+            entity.getTransaction().commit();
+
         }
-        catch(Exception a) {
+        catch(Exception e) {
+
+            System.out.println(e + " updateCompra");
             return false;
+
         }
 
         return true;
+
     }
 
     @Override
     public boolean deleteCompra(Compra com, EntityManager entity) {
+
         try {
-            Statement stmt=con.createStatement();
-            stmt.executeUpdate("Delete from compres where id_bitllet="+com.getIdBitllet()+" AND id_viatge= "+com.getIdViatge());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            entity.getTransaction().begin();
+            entity.remove(com);
+            entity.getTransaction().commit();
+
+        } catch (Exception e) {
+
+            System.out.println(e + " deleteCompra");
+            return false;
+
         }
+
         return true;
+
     }
 
     @Override
     public List<Equipatge> TotsEquip(EntityManager entity) {
+
         List<Equipatge>equipatges=new ArrayList<>();
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from equipatge");
-            rs.getRow();
-            while (rs.next()){
-                equipatges.add(new Equipatge(rs.getInt("id_equipatge"),rs.getString("nom"),rs.getDouble("pes"),rs.getDouble("preu")));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
+        Query query=entity.createQuery("SELECT e FROM Equipatge e");
+        equipatges = query.getResultList();
+
         return equipatges;
+
     }
 
     @Override
     public Equipatge cercaEquipatge(int id, EntityManager entity) {
+
         Equipatge q;
-        try {
-            Statement stmt=con.createStatement();
-            ResultSet rs= stmt.executeQuery("Select * from equipatge where id_equipatge="+id);
-            rs.getRow();
-            rs.next();
-            q=new Equipatge(rs.getInt("id_equipatge"),rs.getString("nom"),rs.getDouble("pes"),rs.getDouble("preu"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+        q = entity.find(Equipatge.class, id);
+        if (q == null) {
+            System.out.println("Equipatge no trobat!");
         }
 
         return q;
+
     }
+
+    //------------------------------------------------------------
 
     @Override
     public boolean createEquipatge(Equipatge equ, EntityManager entity) {
