@@ -1,6 +1,4 @@
 package JPA_Main;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -116,7 +114,7 @@ public static void menuAdmin(){
                         while (!trobat && i<localitats.size()){
                             if (localitats.get(i).getNom().equalsIgnoreCase(origen))  {
                                 trobat=true;
-                                idOrigen = localitats.get(i).getId();
+                                idOrigen = localitats.get(i).getId_localitat();
                             }
                             i++;
                         }
@@ -128,7 +126,7 @@ public static void menuAdmin(){
                         String desti = lec.nextLine();
                         while (!trobat && i<localitats.size()){
                             if (localitats.get(i).getNom().equalsIgnoreCase(desti)) {
-                                idDesti = localitats.get(i).getId();
+                                idDesti = localitats.get(i).getId_localitat();
                                 trobat=true;
                             }
                             i++;
@@ -147,13 +145,13 @@ public static void menuAdmin(){
                         while (!trobat && i<transports.size()){
                             if (transports.get(i).getNom().equalsIgnoreCase(transport)) {
                                 trobat=true;
-                                idTransport = transports.get(i).getId();
+                                idTransport = transports.get(i).getId_transport();
                             }
                             i++;
                         }
                     }while (!trobat);
                     boolean habilitat = true;
-                    Viatge nouViatge = new Viatge(idOrigen,idDesti,dateTime,idTransport,habilitat);
+                    Viatge nouViatge = new Viatge(dao.cercaLocalitat(idOrigen,entity),dao.cercaLocalitat(idDesti,entity),dateTime,dao.cercaTransport(idTransport,entity),habilitat);
                    
                     
                     entity.getTransaction().begin();
@@ -206,7 +204,7 @@ public static void menuAdmin(){
                                 while (!trobat && i<localitats.size()){
                                     if (localitats.get(i).getNom().equalsIgnoreCase(origen))  {
                                         trobat=true;
-                                        idOrigen = localitats.get(i).getId();
+                                        idOrigen = localitats.get(i).getId_localitat();
                                     }
                                     i++;
                                 }
@@ -229,7 +227,7 @@ public static void menuAdmin(){
                                 while (!trobat && i<localitats.size()){
                                     if (localitats.get(i).getNom().equalsIgnoreCase(desti))  {
                                         trobat=true;
-                                        idDesti = localitats.get(i).getId();
+                                        idDesti = localitats.get(i).getId_localitat();
                                     }
                                     i++;
                                 }
@@ -265,7 +263,7 @@ public static void menuAdmin(){
                                 while (!trobat && i<transports.size()){
                                     if (transports.get(i).getNom().equalsIgnoreCase(transport)) {
                                         trobat=true;
-                                        idTransport = transports.get(i).getId();
+                                        idTransport = transports.get(i).getId_transport();
                                     }
                                     i++;
                                 }
@@ -374,7 +372,7 @@ public static void menuUser(Client c){
                                            for (int k=0;k<quant;k++){
                                                System.out.println("Tria una maleta: \n");
                                                for(Equipatge e:equips) {
-                                                   System.out.println(e.getId() + " - " + e.getNom()+"    "+e.getPreu()+"€");
+                                                   System.out.println(e.getId_equipatge() + " - " + e.getNom()+"    "+e.getPreu()+"€");
                                                }
                                                int mal=lec.nextInt();
                                                lec.nextLine();
@@ -464,7 +462,7 @@ public static void menuUser(Client c){
                             System.out.println("Tria una maleta: \n");
                             List<Equipatge>equips=dao.TotsEquip(entity);
                             for(Equipatge e:equips) {
-                                System.out.println(e.getId() + " - " + e.getNom()+ "    "+e.getPreu()+"€");
+                                System.out.println(e.getId_equipatge() + " - " + e.getNom()+ "    "+e.getPreu()+"€");
                             }
                             int mal=lec.nextInt();
                             lec.nextLine();

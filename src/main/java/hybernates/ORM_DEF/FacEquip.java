@@ -10,26 +10,27 @@ public class FacEquip implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     int id;
-    @Id
-    int idVia;
-    @Id
-    int idCli;
-    @Column
-    int idEqui;
+
+    @ManyToOne
+    @JoinColumn(columnDefinition = "id_viatge",foreignKey = @ForeignKey(name = "fk_viatge"))
+    Viatge id_viatge;
+
+    @ManyToOne
+    @JoinColumn(columnDefinition = "id_client",foreignKey = @ForeignKey(name = "fk_client"))
+    Client id_client;
+
+    @ManyToOne
+    @JoinColumn(columnDefinition = "id_equipatge",foreignKey = @ForeignKey(name = "fk_equipatge"))
+    Equipatge id_equipatge;
 
     public FacEquip() {
+
     }
 
-    public FacEquip(int id, int idVia, int idCli, int idEqui) {
-        this.id = id;
-        this.idVia = idVia;
-        this.idCli = idCli;
-        this.idEqui = idEqui;
-    }
-    public FacEquip( int idVia, int idCli, int idEqui) {
-        this.idVia = idVia;
-        this.idCli = idCli;
-        this.idEqui = idEqui;
+    public FacEquip( Viatge id_viatge, Client id_client, Equipatge id_equipatge) {
+        this.id_viatge = id_viatge;
+        this.id_client = id_client;
+        this.id_equipatge = id_equipatge;
     }
 
     public int getId() {
@@ -40,27 +41,27 @@ public class FacEquip implements Serializable {
         this.id = id;
     }
 
-    public int getIdVia() {
-        return idVia;
+    public Viatge getId_viatge() {
+        return id_viatge;
     }
 
-    public void setIdVia(int idVia) {
-        this.idVia = idVia;
+    public void setId_viatge(Viatge id_viatge) {
+        this.id_viatge = id_viatge;
     }
 
-    public int getIdCli() {
-        return idCli;
+    public Client getId_client() {
+        return id_client;
     }
 
-    public void setIdCli(int idCli) {
-        this.idCli = idCli;
+    public void setId_client(Client id_client) {
+        this.id_client = id_client;
     }
 
-    public int getIdEqui() {
-        return idEqui;
+    public Equipatge getId_equipatge() {
+        return id_equipatge;
     }
 
-    public void setIdEqui(int idEqui) {
-        this.idEqui = idEqui;
+    public void setId_equipatge(Equipatge id_equipatge) {
+        this.id_equipatge = id_equipatge;
     }
 }

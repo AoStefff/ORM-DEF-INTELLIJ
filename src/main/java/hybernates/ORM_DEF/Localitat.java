@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Localitat {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    int id;
+    int id_localitat;
     @Column
     String nom;
     @Column
@@ -19,24 +19,24 @@ public class Localitat {
     }
 
     public Localitat(int id, String nom, String pais, String abreviacio) {
-        this.id = id;
+        this.id_localitat = id;
         this.nom = nom;
         this.pais = pais;
         this.abreviacio = abreviacio;
     }
     public Localitat(String nom, String pais, String abreviacio) {
-        this.id = id;
+        this.id_localitat = id_localitat;
         this.nom = nom;
         this.pais = pais;
         this.abreviacio = abreviacio;
     }
 
-    public int getId() {
-        return id;
+    public int getId_localitat() {
+        return id_localitat;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId_localitat(int id_localitat) {
+        this.id_localitat = id_localitat;
     }
 
     public String getNom() {

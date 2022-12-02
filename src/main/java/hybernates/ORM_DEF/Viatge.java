@@ -12,77 +12,72 @@ public class Viatge {
     int id_viatge;
 
     @ManyToOne
-    @JoinColumn(columnDefinition = "id",foreignKey  = @ForeignKey(name = "fk_desti"))
-    Localitat id_origenn;
-    int id_origen;
-	@Column
-    int id_desti;
+    @JoinColumn(columnDefinition = "id_localitat",foreignKey  = @ForeignKey(name = "fk_origen"))
+    Localitat id_origen;
+
+    @ManyToOne
+    @JoinColumn(columnDefinition = "id_localitat",foreignKey  = @ForeignKey(name = "fk_desti"))
+    Localitat id_desti;
+
 	@Column
     LocalDateTime data;
-	@Column
-    int id_transport;
+
+    @ManyToOne
+    @JoinColumn(columnDefinition = "id_transport",foreignKey  = @ForeignKey(name = "fk_transport"))
+    Transport id_transport;
+
 	@Column
     boolean habilitat;
 
     public Viatge() {
     }
 
-    public Viatge(int idOrigen, int idDesti, LocalDateTime dataHora, int idTransport, boolean habilitat) {
-        this.id_origen = idOrigen;
-        this.id_desti = idDesti;
+    public Viatge(Localitat id_origen, Localitat id_desti, LocalDateTime dataHora, Transport id_transport, boolean habilitat) {
+        this.id_origen = id_origen;
+        this.id_desti = id_desti;
         this.data = dataHora;
-        this.id_transport = idTransport;
-        this.habilitat = habilitat;
-    }
-    public Viatge(int idViatge,int idOrigen, int idDesti, LocalDateTime dataHora, int idTransport, boolean habilitat) {
-        this.id_viatge=idViatge;
-        this.id_origen = idOrigen;
-        this.id_desti = idDesti;
-        this.data = dataHora;
-        this.id_transport = idTransport;
+        this.id_transport = id_transport;
         this.habilitat = habilitat;
     }
 
-
-
-    public int getIdViatge() {
+    public int getId_viatge() {
         return id_viatge;
     }
 
-    public void setIdViatge(int idViatge) {
-        this.id_viatge = idViatge;
+    public void setId_viatge(int id_viatge) {
+        this.id_viatge = id_viatge;
     }
 
-    public int getIdOrigen() {
+    public Localitat getId_origen() {
         return id_origen;
     }
 
-    public void setIdOrigen(int idOrigen) {
-        this.id_origen = idOrigen;
+    public void setId_origen(Localitat id_origen) {
+        this.id_origen = id_origen;
     }
 
-    public int getIdDesti() {
+    public Localitat getId_desti() {
         return id_desti;
     }
 
-    public void setIdDesti(int idDesti) {
-        this.id_desti = idDesti;
+    public void setId_desti(Localitat id_desti) {
+        this.id_desti = id_desti;
     }
 
-    public LocalDateTime getDataHora() {
+    public LocalDateTime getData() {
         return data;
     }
 
-    public void setDataHora(LocalDateTime dataHora) {
-        this.data = dataHora;
+    public void setData(LocalDateTime data) {
+        this.data = data;
     }
 
-    public int getIdTransport() {
+    public Transport getId_transport() {
         return id_transport;
     }
 
-    public void setIdTransport(int idTransport) {
-        this.id_transport = idTransport;
+    public void setId_transport(Transport id_transport) {
+        this.id_transport = id_transport;
     }
 
     public boolean isHabilitat() {

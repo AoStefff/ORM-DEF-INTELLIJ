@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Transport {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    int id;
+    int id_transport;
     @Column
     int sNormal;
     @Column
@@ -21,7 +21,7 @@ public class Transport {
     }
 
     public Transport(int idTransport, int sNormal, int sPreferent, String nom, int max_pes) {
-        this.id = idTransport;
+        this.id_transport = idTransport;
         this.sNormal = sNormal;
         this.sPreferent = sPreferent;
         this.nom = nom;
@@ -34,12 +34,12 @@ public class Transport {
         this.maxPes =max_pes;
     }
 
-    public int getId() {
-        return id;
+    public int getId_transport() {
+        return id_transport;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId_transport(int id_transport) {
+        this.id_transport = id_transport;
     }
 
     public int getsNormal() {

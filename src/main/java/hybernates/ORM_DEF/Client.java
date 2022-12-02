@@ -15,7 +15,7 @@ public class Client  {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    int id;
+    int id_client;
     @Column
     String dni;
     @Column
@@ -42,7 +42,7 @@ public class Client  {
 
     }
     public Client(int id, String dni, String nom, LocalDate dataNaix, String telefon, String email,boolean admin) {
-       this.id=id;
+       this.id_client=id;
         this.dni = dni;
         this.nom = nom;
         this.dataNaix = dataNaix;
@@ -52,11 +52,11 @@ public class Client  {
     }
 
     public int getId() {
-        return id;
+        return id_client;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id_client = id;
     }
 
     public String getDni() {

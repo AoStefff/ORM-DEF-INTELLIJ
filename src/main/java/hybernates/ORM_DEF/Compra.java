@@ -9,12 +9,18 @@ public class Compra {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     int idCompra;
-    @Column
-    int idBitllet;
-    @Column
-    int idViatge;
-    @Column
-    int idClient;
+
+    @ManyToOne
+    @JoinColumn(columnDefinition = "id_bitllet",foreignKey = @ForeignKey(name = "fk_bitllet"))
+    Bitllet id_bitllet;
+
+    @ManyToOne
+    @JoinColumn(columnDefinition = "id_viatge",foreignKey = @ForeignKey(name = "fk_viatge"))
+    Viatge id_viatge;
+
+    @ManyToOne
+    @JoinColumn(columnDefinition = "id_client",foreignKey = @ForeignKey(name = "fk_client"))
+    Client id_client;
     @Column
     LocalDate dataCompra;
     @Column
@@ -27,48 +33,46 @@ public class Compra {
     public Compra() {
     }
 
-    public Compra(int idBitllet, int idViatge, int idClient, LocalDate dataCompra, double preu, String nomPassatger, String dniPassatger) {
-        this.idBitllet = idBitllet;
-        this.idViatge = idViatge;
-        this.idClient = idClient;
-        this.dataCompra = dataCompra;
-        this.preu = preu;
-        this.nomPassatger = nomPassatger;
-        this.dniPassatger = dniPassatger;
-    }
-    public Compra(int idCompra,int idBitllet, int idViatge, int idClient, LocalDate dataCompra, double preu, String nomPassatger, String dniPassatger) {
-        this.idCompra=idCompra;
-        this.idBitllet = idBitllet;
-        this.idViatge = idViatge;
-        this.idClient = idClient;
+    public Compra(Bitllet id_bitllet, Viatge id_viatge, Client id_client, LocalDate dataCompra, double preu, String nomPassatger, String dniPassatger) {
+        this.id_bitllet = id_bitllet;
+        this.id_viatge = id_viatge;
+        this.id_client = id_client;
         this.dataCompra = dataCompra;
         this.preu = preu;
         this.nomPassatger = nomPassatger;
         this.dniPassatger = dniPassatger;
     }
 
-    public int getIdBitllet() {
-        return idBitllet;
+    public int getIdCompra() {
+        return idCompra;
     }
 
-    public void setIdBitllet(int idBitllet) {
-        this.idBitllet = idBitllet;
+    public void setIdCompra(int idCompra) {
+        this.idCompra = idCompra;
     }
 
-    public int getIdViatge() {
-        return idViatge;
+    public Bitllet getId_bitllet() {
+        return id_bitllet;
     }
 
-    public void setIdViatge(int idViatge) {
-        this.idViatge = idViatge;
+    public void setId_bitllet(Bitllet id_bitllet) {
+        this.id_bitllet = id_bitllet;
     }
 
-    public int getIdClient() {
-        return idClient;
+    public Viatge getId_viatge() {
+        return id_viatge;
     }
 
-    public void setIdClient(int idClient) {
-        this.idClient = idClient;
+    public void setId_viatge(Viatge id_viatge) {
+        this.id_viatge = id_viatge;
+    }
+
+    public Client getId_client() {
+        return id_client;
+    }
+
+    public void setId_client(Client id_client) {
+        this.id_client = id_client;
     }
 
     public LocalDate getDataCompra() {
@@ -101,13 +105,5 @@ public class Compra {
 
     public void setDniPassatger(String dniPassatger) {
         this.dniPassatger = dniPassatger;
-    }
-
-    public int getIdCompra() {
-        return idCompra;
-    }
-
-    public void setIdCompra(int idCompra) {
-        this.idCompra = idCompra;
     }
 }

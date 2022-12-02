@@ -9,7 +9,7 @@ import javax.persistence.Table;
 @Table(name="equipatge")
 public class Equipatge {
     @Id
-    int id;
+    int id_equipatge;
     @Column
     String nom;
     @Column
@@ -18,7 +18,7 @@ public class Equipatge {
     double preu;
 
     public Equipatge(int id, String nom, double pes, double preu) {
-        this.id = id;
+        this.id_equipatge = id;
         this.nom = nom;
         this.pes = pes;
         this.preu=preu;
@@ -33,12 +33,12 @@ public class Equipatge {
 
     }
 
-    public int getId() {
-        return id;
+    public int getId_equipatge() {
+        return id_equipatge;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId_equipatge(int id_equipatge) {
+        this.id_equipatge = id_equipatge;
     }
 
     public String getNom() {
