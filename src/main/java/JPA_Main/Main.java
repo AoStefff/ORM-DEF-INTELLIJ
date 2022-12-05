@@ -168,7 +168,7 @@ public static void menuAdmin(){
                     System.out.println("Entra el preu del bitllet");
                     double preuN = lec.nextDouble();
                     lec.nextLine();
-                    Bitllet nouBitllet = new Bitllet(preuN,1,llistaViatges.get(llistaViatges.size()-1).getIdViatge());
+                    Bitllet nouBitllet = new Bitllet(preuN,1,llistaViatges.get(llistaViatges.size()-1).getId_viatge());
                     dao.createBitllet(nouBitllet, entity);
                     break;
                 case 3:
@@ -209,7 +209,7 @@ public static void menuAdmin(){
                                     i++;
                                 }
                             }while (!trobat);
-                            vO.setIdOrigen(idOrigen);
+                            vO.setId_origen(idOrigen);
                             dao.updateViatge(vO, entity);
                             break;
                         case 2:
@@ -232,7 +232,7 @@ public static void menuAdmin(){
                                     i++;
                                 }
                             }while (!trobat);
-                            vD.setIdDesti(idDesti);
+                            vD.setId_desti(idDesti);
                             dao.updateViatge(vD, entity);
                             break;
                         case 3:
@@ -245,7 +245,7 @@ public static void menuAdmin(){
                             System.out.println("Entra l'hora 'HH:MM' del viatge");
                             String [] horaH =lec.nextLine().split(":");
                             LocalDateTime dateTimeH = LocalDateTime.of(LocalDate.of(Integer.parseInt(dataH[2]),Integer.parseInt(dataH[1]),Integer.parseInt(dataH[0])),LocalTime.of(Integer.parseInt(horaH[0]),Integer.parseInt(horaH[1])));
-                            vH.setDataHora(dateTimeH);
+                            vH.setData(dateTimeH);
                             dao.updateViatge(vH, entity);
                             break;
                         case 4:
@@ -268,7 +268,7 @@ public static void menuAdmin(){
                                     i++;
                                 }
                             }while (!trobat);
-                            vT.setIdTransport(idTransport);
+                            vT.setId_transport(idTransport);
                             dao.updateViatge(vT, entity);
                             break;
                         case 5:
@@ -308,12 +308,12 @@ public static void menuUser(Client c){
                 System.out.println("Introdueix la teva ciutat de sortida");
                 origen=lec.nextLine();
                 for(Viatge v:viatgeList){
-                    if (dao.cercaLocalitat(v.getIdOrigen(), entity).getNom().equalsIgnoreCase(origen) && LocalDateTime.now().isBefore(v.getDataHora()) && v.isHabilitat()) {
+                    if (dao.cercaLocalitat(v.getId_origen(), entity).getNom().equalsIgnoreCase(origen) && LocalDateTime.now().isBefore(v.getData()) && v.isHabilitat()) {
                         System.out.println("\n---------------");
-                        System.out.println(dao.cercaTransport(v.getIdTransport(), entity).getNom());
-                        System.out.print(dao.cercaLocalitat(v.getIdOrigen(), entity).getNom() + " ---> " + dao.cercaLocalitat(v.getIdDesti(), entity).getNom());
-                        System.out.println("     "+v.getDataHora());
-                        System.out.println("Per comprar bitllets d'aquest viatge copia aquest codi: "+v.getIdViatge());
+                        System.out.println(dao.cercaTransport(v.getId_transport(), entity).getNom());
+                        System.out.print(dao.cercaLocalitat(v.getId_origen(), entity).getNom() + " ---> " + dao.cercaLocalitat(v.getId_desti(), entity).getNom());
+                        System.out.println("     "+v.getData());
+                        System.out.println("Per comprar bitllets d'aquest viatge copia aquest codi: "+v.getId_viatge());
                     }
                 }
                 int codi=0;
@@ -333,12 +333,12 @@ public static void menuUser(Client c){
                     else i++;
                 }
                 Viatge v = dao.cercaViatge(codi, entity);
-                Transport t = dao.cercaTransport(v.getIdTransport(), entity);
+                Transport t = dao.cercaTransport(v.getId_transport(), entity);
                 int seients= t.getsNormal() + t.getsPreferent();
                  List<Compra>compres = dao.TotsCom(entity);
                  int dispo=seients;
                  for(Compra co:compres){
-                     if(co.getIdBitllet()==b.getId_bitllet()){
+                     if(co.getId_bitllet()==b.getId_bitllet()){
                          dispo--;
                      }
                  }
@@ -363,7 +363,7 @@ public static void menuUser(Client c){
                                        System.out.println("Portarà maletes? (S/N)");
                                        resp=lec.nextLine();
                                        if (resp.equalsIgnoreCase("S")){
-                                           Compra com=new Compra(b.getId_bitllet(),v.getIdViatge(),c.getId(),LocalDate.now(),b.getPreu(),nom,dni);
+                                           Compra com=new Compra(b.getId_bitllet(),v.getId_viatge(),c.getId(),LocalDate.now(),b.getPreu(),nom,dni);
                                            List<Equipatge>equips=dao.TotsEquip(entity);
                                            System.out.println("Quantes maletes portarà? Maxim 3 per persona");
                                            int quant=lec.nextInt();
@@ -377,9 +377,9 @@ public static void menuUser(Client c){
                                                int mal=lec.nextInt();
                                                lec.nextLine();
                                                FacEquip fe;
-                                               fe=new FacEquip(v.getIdViatge(),c.getId(),mal);
+                                               fe=new FacEquip(v.getId_viatge(),c.getId(),mal);
                                                pest=pest+dao.cercaEquipatge(mal, entity).getPes();
-                                               if(pest<=dao.cercaTransport(v.getIdTransport(), entity).getMaxPes()){
+                                               if(pest<=dao.cercaTransport(v.getId_transport(), entity).getMaxPes()){
                                                    dao.createFacEquipatge(fe, entity);
                                                    com.setPreu(com.getPreu()+dao.cercaEquipatge(mal, entity).getPreu());
                                                }
@@ -391,7 +391,7 @@ public static void menuUser(Client c){
                                            dao.createCompra(com, entity);
                                        }
                                        else {
-                                           Compra com=new Compra(b.getId_bitllet(),v.getIdViatge(),c.getId(),LocalDate.now(),b.getPreu(),nom,dni);
+                                           Compra com=new Compra(b.getId_bitllet(),v.getId_viatge(),c.getId(),LocalDate.now(),b.getPreu(),nom,dni);
                                            dao.createCompra(com, entity);
                                        }
                                }
@@ -412,12 +412,12 @@ public static void menuUser(Client c){
                         List<Compra>compras=dao.TotsCom(entity);
                         ArrayList<Compra>compraC= new ArrayList<>();
                         for (Compra co:compras){
-                            if (co.getIdClient()==c.getId()){
+                            if (co.getId_client()==c.getId()){
                                 compraC.add(co);
                             }
                         }
                         for (Compra com:compraC){
-                            System.out.print(dao.cercaLocalitat(dao.cercaViatge(com.getIdViatge(), entity).getIdOrigen(), entity).getNom()+"------>"+dao.cercaLocalitat(dao.cercaViatge(com.getIdViatge(), entity).getIdDesti(), entity).getNom());
+                            System.out.print(dao.cercaLocalitat(dao.cercaViatge(com.getId_viatge(), entity).getId_origen(), entity).getNom()+"------>"+dao.cercaLocalitat(dao.cercaViatge(com.getId_viatge(), entity).getId_desti()sti(), entity).getNom());
                             System.out.println("     ID: "+com.getIdCompra()+"     "+com.getNomPassatger());
                         }
                         System.out.println("Entra la ID per esborrar la compra");
@@ -429,13 +429,13 @@ public static void menuUser(Client c){
                         List<FacEquip>facEquips=dao.TotsFequip(entity);
                         ArrayList<FacEquip>facEqC= new ArrayList<>();
                         for (FacEquip fe:facEquips){
-                            if (fe.getIdCli()==c.getId()){
+                            if (fe.getId_client()==c.getId()){
                                 facEqC.add(fe);
                             }
                         }
                         for (FacEquip faq:facEqC){
-                            System.out.print(dao.cercaLocalitat(dao.cercaViatge(faq.getIdVia(), entity).getIdOrigen(), entity).getNom()+"------>"+dao.cercaLocalitat(dao.cercaViatge(faq.getIdVia(), entity).getIdDesti(), entity).getNom());
-                            System.out.print("     "+dao.cercaEquipatge(faq.getIdEqui(), entity).getNom());
+                            System.out.print(dao.cercaLocalitat(dao.cercaViatge(faq.getId_viatge(), entity).getId_origen(), entity).getNom()+"------>"+dao.cercaLocalitat(dao.cercaViatge(faq.getId_viatge(), entity).getId_desti()sti(), entity).getNom());
+                            System.out.print("     "+dao.cercaEquipatge(faq.getId_equipatge(), entity).getNom());
                             System.out.println("     ID: "+faq.getId());
                         }
                         System.out.println("Entra la ID per esborrar la compra");
@@ -447,12 +447,12 @@ public static void menuUser(Client c){
                         List<Compra>comprasM=dao.TotsCom(entity);
                         ArrayList<Compra>compraCM= new ArrayList<>();
                         for (Compra co:comprasM){
-                            if (co.getIdClient()==c.getId()){
+                            if (co.getId_client()==c.getId()){
                                 compraCM.add(co);
                             }
                         }
                         for (Compra com:compraCM){
-                            System.out.print(dao.cercaLocalitat(dao.cercaViatge(com.getIdViatge(), entity).getIdOrigen(), entity).getNom()+"------>"+dao.cercaLocalitat(dao.cercaViatge(com.getIdViatge(), entity).getIdDesti(), entity).getNom());
+                            System.out.print(dao.cercaLocalitat(dao.cercaViatge(com.getId_viatge(), entity).getId_origen(), entity).getNom()+"------>"+dao.cercaLocalitat(dao.cercaViatge(com.getId_viatge(), entity).getId_desti()sti(), entity).getNom());
                             System.out.println("     ID: "+com.getIdCompra());
                         }
                         System.out.println("Entra la ID per afegir maletes");
@@ -467,10 +467,10 @@ public static void menuUser(Client c){
                             int mal=lec.nextInt();
                             lec.nextLine();
                             FacEquip fe;
-                            Viatge vM = dao.cercaViatge(dao.cercaCompra(idEM, entity).getIdViatge(), entity);
-                            fe=new FacEquip(vM.getIdViatge(),c.getId(),mal);
+                            Viatge vM = dao.cercaViatge(dao.cercaCompra(idEM, entity).getId_viatge(), entity);
+                            fe=new FacEquip(vM.getId_viatge(),c.getId(),mal);
                             double pest=dao.cercaEquipatge(mal, entity).getPes();
-                            if(pest<=dao.cercaTransport(vM.getIdTransport(), entity).getMaxPes()){
+                            if(pest<=dao.cercaTransport(vM.getId_transport(), entity).getMaxPes()){
                                 dao.createFacEquipatge(fe, entity);
                                 Compra ca = dao.cercaCompra(idEM, entity);
                                 ca.setPreu(dao.cercaCompra(idEM, entity).getPreu()+dao.cercaEquipatge(mal, entity).getPreu());
@@ -510,9 +510,9 @@ public static void menuUser(Client c){
 
         for(Viatge v:viatgeList){
             System.out.println("\n---------------");
-            System.out.println(dao.cercaTransport(v.getIdTransport(), entity).getNom());
-            System.out.print(dao.cercaLocalitat(v.getIdOrigen(), entity).getNom()+" ---> "+dao.cercaLocalitat(v.getIdDesti(), entity).getNom());
-            System.out.print("      "+v.getDataHora()+ "     ID: "+v.getIdViatge());
+            System.out.println(dao.cercaTransport(v.getId_transport(), entity).getNom());
+            System.out.print(dao.cercaLocalitat(v.getId_origen(), entity).getNom()+" ---> "+dao.cercaLocalitat(v.getId_desti(), entity).getNom());
+            System.out.print("      "+v.getData()+ "     ID: "+v.getId_viatge());
             if (v.isHabilitat()){
                 System.out.println("     HABILITAT");
             }
