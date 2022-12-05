@@ -27,13 +27,13 @@ public class Implementacions implements DAO {
     }
 
     @Override
-    public Client cercaClient(String dni, EntityManager entity) {
+    public Client cercaClient(int id, EntityManager entity) {
 
         //cerca un client mitjançant el seu id(dni).
 
         Client c;
 
-        c = entity.find(Client.class, dni);
+        c = entity.find(Client.class, id);
         if (c == null) {
             System.out.println("Client no trobat!");
         }

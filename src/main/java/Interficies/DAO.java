@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DAO {
     List<Client> TotsCli(EntityManager entity);
-    Client cercaClient(String dni, EntityManager entity);
+    Client cercaClient(int id, EntityManager entity);
 
     boolean createClient(Client cli, EntityManager entity);
     boolean updateClient(Client cli, EntityManager entity);

@@ -46,7 +46,25 @@ public class Main {
                           dni=lec.nextLine();
                       }
                       System.out.println("Inici de sessió correcte");
-                     Client cli= dao.cercaClient(dni, entity);
+                      List<Client> clients = dao.TotsCli(entity);
+
+                      boolean trobat = false;
+                      int i = 0;
+                      int id = 0;
+
+                      while(!trobat && i < clients.size()){
+
+                          if(clients.get(i).getDni().equals(dni)){
+
+                              id = clients.get(i).getId();
+                              trobat = true;
+
+                          }
+
+                          i++;
+                      }
+
+                     Client cli= dao.cercaClient(id, entity);
                      if(cli.isAdmin()){
                          menuAdmin();
                      }
@@ -437,6 +455,7 @@ public static void menuUser(Client c){
                             System.out.print(dao.cercaLocalitat(dao.cercaViatge(faq.getId_viatge().getId_viatge(), entity).getId_origen().getId_localitat(), entity).getNom()+"------>"+dao.cercaLocalitat(dao.cercaViatge(faq.getId_viatge().getId_viatge(), entity).getId_desti().getId_localitat(), entity).getNom());
                             System.out.print("     "+dao.cercaEquipatge(faq.getId_equipatge().getId_equipatge(), entity).getNom());
                             System.out.println("     ID: "+faq.getId());
+
                         }
                         System.out.println("Entra la ID per esborrar la compra");
                         int idE2 = lec.nextInt();
@@ -454,7 +473,8 @@ public static void menuUser(Client c){
                         for (Compra com:compraCM){
 
                             System.out.print(dao.cercaLocalitat(dao.cercaViatge(com.getId_viatge().getId_viatge(), entity).getId_origen().getId_localitat(), entity).getNom()+"------>"+dao.cercaLocalitat(dao.cercaViatge(com.getId_viatge().getId_viatge(), entity).getId_desti().getId_localitat(), entity).getNom());
-                            System.out.println("     ID: "+com.getIdCompra());
+                            System.out.println("     ID: "+com.getIdCompra()+"     "+com.getNomPassatger());
+
                         }
                         System.out.println("Entra la ID per afegir maletes");
                         int idEM = lec.nextInt();
@@ -527,11 +547,24 @@ public static void menuUser(Client c){
     }
 
     public static boolean userExist(String d){
-        Client c= dao.cercaClient(d, entity);
-        if (c.getDni().equals(d)){
-            return true;
-        }else{
-            return false;
+
+        List<Client> clients = dao.TotsCli(entity);
+        boolean trobat = false;
+        int i = 0;
+        int id = 0;
+
+        while(!trobat && i < clients.size()){
+
+            if(clients.get(i).getDni().equals(d)){
+
+                id = clients.get(i).getId();
+                trobat = true;
+
+            }
+
+            i++;
         }
+
+        return  trobat;
     }
 }

@@ -13,7 +13,7 @@ public class Bitllet {
     @Column
     int tipus_s;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(columnDefinition = "id_viatge",foreignKey  = @ForeignKey(name = "fk_viatge"))
     Viatge id_viatge;
 
